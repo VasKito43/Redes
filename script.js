@@ -1,8 +1,8 @@
 const ip = "111.111.00.00" // exemplo
 
-const mascara = 24 //exemplo
+const mascara = 26 //exemplo
 
-const qtd_sudrede = 2 // exemplo
+const qtd_sudrede = 5 // exemplo
 
 
 const tableContainer = document.getElementById('table-container')
@@ -40,7 +40,7 @@ function converte_decimal(binario){ //converte um numero binario para decimal
 }
 
 
-function broadcast(ip, mascara){
+function encontra_broadcast(ip, mascara){
     mascara = parseInt(mascara)
 
     let ip_dividido = divide_ip(ip)
@@ -68,30 +68,51 @@ function broadcast(ip, mascara){
     }
     return ip_dividido
 }
-console.log(broadcast(ip, mascara)) // -------------------------------------
+console.log(encontra_broadcast(ip, mascara)) // -------------------------------------
 
 function sub_rede(ip, mascara, qtd_sudrede){
-    const matriz = [["subrede", "primeiro endereço", "ultimo endereço", "mascara"]]
+    let matriz = [["subrede", "primeiro endereço", "ultimo endereço", "mascara"]]
     qtd_sudrede = parseInt(qtd_sudrede)
     let primeiro_ip = ip
     let ultimo_end = ""
     let broadcast = []
-    linha = []
 
     for (let i = 1; i <= qtd_sudrede; i ++) {
+        let linha = []
+
+
         linha.push(i)
         linha.push(primeiro_ip)
-        broadcast = broadcast(ip, mascara)
+        broadcast = encontra_broadcast(primeiro_ip, mascara)
 
-        if (parseInt(broadcast[3]) == 0){
-            
+        ultimo_end = `${broadcast[0]}.${broadcast[1]}.${broadcast[2]}.${broadcast[3]}`
+        linha.push(ultimo_end)
+        linha.push(mascara)
+        matriz.push(linha)
+        if (parseInt(broadcast[3]) == 255){
+            broadcast[3] = 0
+            if (parseInt(broadcast[2]) == 255){
+                broadcast [2] = 0
+                if (parseInt(broadcast[1]) == 255){
+                    broadcast[1] = 0
+                    if (parseInt(broadcast[0]) != 255){
+                        broadcast[0] = parseInt(broadcast[0]) + 1
+                    }
+                }else {
+                    broadcast[1] = parseInt(broadcast[1]) + 1
+                }
+            }else {
+                broadcast[2] = parseInt(broadcast[2]) + 1
+            }
+        } else {
+            broadcast[3] = parseInt(broadcast[3]) + 1
         }
 
-        ultimo_end = `${broadcast[0]}.${broadcast[1]}.${broadcast[2]}.${parseInt(broadcast[3])-1}`
-        
-        if (parseInt(broadcast[3]) == 255)
+        primeiro_ip = `${broadcast[0]}.${broadcast[1]}.${broadcast[2]}.${broadcast[3]}`
 
     }
+
+    return matriz
 }
 
 
@@ -123,6 +144,6 @@ function cria_tabela(matriz) {
 
 
 
-const table = cria_tabela(matriz);
-
+const table = cria_tabela(sub_rede(ip, mascara, qtd_sudrede));
+console.log(sub_rede(ip, mascara, qtd_sudrede))
 tableContainer.appendChild(table);

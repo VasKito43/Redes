@@ -7,27 +7,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div id="container" class="container">
         <h1>Calcular Sub-redes</h1>
-        <form action="#" method="post">
+        <form id="subnetForm" action="#" method="post">
             <div class="input-group">
                 <label for="ipAddress">Endereço IP:</label>
-                <input type="text" id="ipAddress"placeholder="Ex: 26.17.236.16">
+                <input type="text" id="ipAddress" name="ipAddress" placeholder="Ex: 26.17.236.16">
             </div>
             <div class="labelcss">
                 <label for="subnetMask">Máscara de Sub-rede:</label>
                 <label for="subnetCount">Quantidade de Sub-redes:</label>
             </div>
             <div class="input-group2">
-                <input type="text" id="inputinf" placeholder="Ex: 26">
-                
-                <input type="number" id="inputinf" placeholder="Ex: 10">
+                <input type="text" id="subnetMask" name="subnetMask" placeholder="Ex: 26">
+                <input type="number" id="subnetCount" name="subnetCount" placeholder="Ex: 10">
             </div>
+            <p id="error"></p>
+
             <div class="button-group">
-                <button type="submit">Calcular</button>
+                <button type="button" id="calculateBtn">Calcular</button>
                 <button type="reset">Limpar</button>
             </div>
         </form>
     </div>
+    <div id="resultContainer" class="result-container" style="display: none;">
+        <button id="backBtn">Voltar</button>
+        <div id="table-container"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

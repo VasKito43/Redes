@@ -1,13 +1,8 @@
 const ip = "111.111.00.00" // exemplo
-
 const mascara = 26 //exemplo
-
 const qtd_sudrede = 5 // exemplo
 
-
-const tableContainer = document.getElementById('table-container')
-
-
+const tableContainer = document.getElementById('table-container') // div que recebe a tabela
 
 
 function divide_ip(ip){ //separa o ip nos decimais, tirando os pontos
@@ -40,7 +35,7 @@ function converte_decimal(binario){ //converte um numero binario para decimal
 }
 
 
-function encontra_broadcast(ip, mascara){
+function encontra_broadcast(ip, mascara){ // Encontra o ultimo endereço
     mascara = parseInt(mascara)
 
     let ip_dividido = divide_ip(ip)
@@ -68,9 +63,8 @@ function encontra_broadcast(ip, mascara){
     }
     return ip_dividido
 }
-console.log(encontra_broadcast(ip, mascara)) // -------------------------------------
 
-function sub_rede(ip, mascara, qtd_sudrede){
+function sub_rede(ip, mascara, qtd_sudrede){ // Encontra todos os enreçoes e faz a matriz da tabela
     let matriz = [["subrede", "primeiro endereço", "ultimo endereço", "mascara"]]
     qtd_sudrede = parseInt(qtd_sudrede)
     let primeiro_ip = ip
@@ -79,7 +73,6 @@ function sub_rede(ip, mascara, qtd_sudrede){
 
     for (let i = 1; i <= qtd_sudrede; i ++) {
         let linha = []
-
 
         linha.push(i)
         linha.push(primeiro_ip)
@@ -116,14 +109,7 @@ function sub_rede(ip, mascara, qtd_sudrede){
 }
 
 
-const matriz = [
-    ["Header 1", "Header 2", "Header 3"],
-    ["Row 1, Cell 1", "Row 1, Cell 2", "Row 1, Cell 3"],
-    ["Row 2, Cell 1", "Row 2, Cell 2", "Row 2, Cell 3"],
-    ["Row 3, Cell 1", "Row 3, Cell 2", "Row 3, Cell 3"]
-];
-
-function cria_tabela(matriz) {
+function cria_tabela(matriz) { // Transforma uma matriz em uma tabela
     const tabela = document.createElement('table')
     tabela.border = "1"
 
@@ -144,6 +130,6 @@ function cria_tabela(matriz) {
 
 
 
-const table = cria_tabela(sub_rede(ip, mascara, qtd_sudrede));
-console.log(sub_rede(ip, mascara, qtd_sudrede))
-tableContainer.appendChild(table);
+const table = cria_tabela(sub_rede(ip, mascara, qtd_sudrede))
+
+tableContainer.appendChild(table)

@@ -25,11 +25,23 @@ document.getElementById('backBtn').addEventListener('click', function() {
     document.getElementById('container').style.display = 'block';
 });
 
+/** 
+ * Separa string do ip em um array.
+ * 
+ * @param {strring} ip - ip para separação.
+ * @return {array} ip dividido no array.
+*/
 function divide_ip(ip) { 
     let list = ip.split('.');
     return list;
 }
 
+/**
+ * Converte um numero decimal para binario.
+ * 
+ * @param {*} decimal - decimal para conversão.
+ * @returns {array} numero convertido para binario.
+ */
 function converte_binario(decimal) { 
     decimal = parseInt(decimal);
     let binario = [];
@@ -44,6 +56,12 @@ function converte_binario(decimal) {
     return binario;
 }
 
+/**
+ * Converte um numero decimal para decimal.
+ * 
+ * @param {array} binario  - Array com numero binario para ser convertido.
+ * @returns {number} numero convertido para decimal.
+ */
 function converte_decimal(binario) { 
     let decimal = 0;
     let n = 7;
@@ -54,6 +72,13 @@ function converte_decimal(binario) {
     return decimal;
 }
 
+/**
+ * Recebe o primeiro endereço e encontra o ultimo endereço.
+ * 
+ * @param {string} ip - primeiro endereço.
+ * @param {*} mascara - mascara.
+ * @returns {string} ultimo endereço.
+ */
 function encontra_broadcast(ip, mascara) { 
     mascara = parseInt(mascara);
 
@@ -83,6 +108,14 @@ function encontra_broadcast(ip, mascara) {
     return ip_dividido;
 }
 
+/**
+ * Cria uma matriz contendo todos os primeiro e ultimos endereços.
+ * 
+ * @param {string} ip - ip recebido do usuario.
+ * @param {*} mascara - mascara recebido pelo usuario.
+ * @param {*} qtd_sudrede - quantidades de subredes recebido pelo usuario.
+ * @returns {array} matriz para criação da tabela.
+ */
 function sub_rede(ip, mascara, qtd_sudrede) { 
     let matriz = [["subrede", "primeiro endereço", "ultimo endereço", "mascara"]];
     qtd_sudrede = parseInt(qtd_sudrede);
@@ -126,6 +159,12 @@ function sub_rede(ip, mascara, qtd_sudrede) {
     return matriz;
 }
 
+/**
+ * Transforma a matriz em uma tabela contendo todas as subredes para visualização do usuario.
+ * 
+ * @param {array} matriz - matriz para ciar a tabela.
+ * @returns - tabela ja construida.
+ */
 function cria_tabela(matriz) { 
     const tabela = document.createElement('table');
     tabela.border = "1";

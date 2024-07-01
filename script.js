@@ -3,10 +3,8 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
     const mascara = document.getElementById('subnetMask').value;
     const qtd_sudrede = document.getElementById('subnetCount').value;
     var texto = document.getElementById('error')
-    console.log(ip, mascara, qtd_sudrede)
-    if (ip != "" && mascara != "" && qtd_sudrede != "") {
+    if (ip != "" && mascara != "" && qtd_sudrede != "" && mascara <=32 && mascara > 0) {
         const tableContainer = document.getElementById('table-container');
-    
         tableContainer.innerHTML = ''; // Limpa o conteúdo anterior
         const table = cria_tabela(sub_rede(ip, mascara, qtd_sudrede));
         tableContainer.appendChild(table);
@@ -32,9 +30,23 @@ document.getElementById('backBtn').addEventListener('click', function() {
  * @return {array} ip dividido no array.
 */
 function divide_ip(ip) { 
+    var texto = document.getElementById('error')
     let list = ip.split('.');
+    if (list.length != 4){
+        texto.textContent = "Ip invalido";
+        return "erro"
+    }
+    for (let i = 0; i < list.length; i++) {
+        const num = parseInt(list[i]);
+        if (isNaN(num) || num < 0 || num > 255) {
+            texto.textContent = "Ip invalido";
+            return "erro";
+        }
+        list[i] = num;
+    }
+
     return list;
-}
+}   
 
 /**
  * Converte um numero decimal para binario.
@@ -83,6 +95,9 @@ function encontra_broadcast(ip, mascara) {
     mascara = parseInt(mascara);
 
     let ip_dividido = divide_ip(ip);
+    if(ip_dividido == "erro"){
+        return
+    }
     let ip_binario = [];
     let ip_concatenado = [];
 
@@ -117,8 +132,14 @@ function encontra_broadcast(ip, mascara) {
  * @returns {array} matriz para criação da tabela.
  */
 function sub_rede(ip, mascara, qtd_sudrede) { 
+    var texto = document.getElementById('error')
     let matriz = [["subrede", "primeiro endereço", "ultimo endereço", "mascara"]];
     qtd_sudrede = parseInt(qtd_sudrede);
+    if (mascara != parseInt(mascara)) {
+        texto.textContent = "Mascara tem que ser inteira"
+        return "erro"
+    }
+    mascara = encontra_mascara(mascara, qtd_sudrede)
     let primeiro_ip = ip;
     let ultimo_end = "";
     let broadcast = [];
@@ -182,4 +203,21 @@ function cria_tabela(matriz) {
     });
 
     return tabela;
+}
+
+/**
+ * Encontra a mascara.
+ * 
+ * @param {*} mascara - mascara.
+ * @param {*} qtd_sudrede - quantidade de subrede.
+ * @returns {number} - mascara encontrada.
+ */
+function encontra_mascara(mascara, qtd_sudrede){
+    mascara = parseInt(mascara)
+    qtd_sudrede = parseInt(qtd_sudrede)
+    mascara = 32 - mascara
+    mascara = (2**mascara)/qtd_sudrede
+    mascara = Math.log2(mascara)
+    mascara = 32 - mascara
+    return mascara
 }

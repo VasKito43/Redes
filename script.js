@@ -217,7 +217,8 @@ function encontra_mascara(mascara, qtd_sudrede){
     qtd_sudrede = parseInt(qtd_sudrede)
     mascara = 32 - mascara
     mascara = (2**mascara)/qtd_sudrede
-    mascara = Math.log2(mascara)
+    mascara = Math.ceil(Math.log2(mascara))
     mascara = 32 - mascara
     return mascara
 }
+console.log(encontra_mascara(26, 10))
